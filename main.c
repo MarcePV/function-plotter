@@ -1,15 +1,16 @@
 #include <raylib.h>
 #include <raymath.h>
 
+#define SCREEN_WIDTH 1440
+#define SCREEN_HEIGHT 1440 // for now, transform for asymetric alter
+ 
 void draw_x_axis(int width, int height);
 void draw_y_axis(int width, int height);
+int f(float x);
 
 int main()
 {
-  const int screen_width = 1920;
-  const int screen_height = 1080;
-
-  InitWindow(screen_width, screen_height, "Function Plotter"); 
+  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Function Plotter"); 
 
   while (!WindowShouldClose())
   {
@@ -18,9 +19,13 @@ int main()
     BeginDrawing();
       ClearBackground(BLACK);
 
-      draw_x_axis(screen_width, screen_height);
-      draw_y_axis(screen_width, screen_height);
+      for (float x = 0.0f; x < SCREEN_WIDTH; x++)
+      {
+        DrawCircle(x, f(x), 1, BLUE);
+      }
 
+      draw_x_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
+      draw_y_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
     EndDrawing();
   }
 
@@ -33,7 +38,13 @@ void draw_x_axis(int width, int height)
 {
   DrawLine(width / 2, 0, width / 2, height, WHITE);  
 }
+
 void draw_y_axis(int width, int height)
 {
   DrawLine(0, height / 2, width, height / 2, WHITE);
+}
+
+int f(float x)
+{
+  return x;
 }
