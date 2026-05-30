@@ -1,16 +1,13 @@
 APPNAME = my_app
-CFLAGS = -o $(APPNAME) -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
+LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 CFILES = main.c getopt.c plot_functions.c
 
 all: runnable 
-	make clean
-	make runnable
 
-runnable: CFILES
-	gcc $(CFLAGS) $(CFILES)
+runnable: $(CFILES)
+	gcc $(CFILES) -o $(APPNAME) $(CFLAGS) $(LIBS)
 
 clean:
-	rm $(APPNAME)
-
-
+	rm -f $(APPNAME)
