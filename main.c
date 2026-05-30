@@ -1,7 +1,9 @@
 #include <math.h>
 #include <raylib.h>
 #include <raymath.h>
-#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdio.h>
 
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 1440
@@ -27,10 +29,20 @@ float plot_sin(float x, float x_scale, float y_scale);
 float plot_e(float x, float x_scale, float y_scale);
 float (*plot_fn)(float, float, float) = NULL;
 
-int main()
+int main(int argc, char *argv[])
 {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Function Plotter"); 
   SetTargetFPS(240);
+
+  if (argc < 2)
+  {
+    (void)argv;
+    printf("\n\nUsage: <program> [-f] <name of function> (e.g. parabola, euler, sin).\n\n");
+    CloseWindow();
+    return -1;
+  }
+
+
   
 
   float original_x_scale = 0.05f;
@@ -92,7 +104,7 @@ int main()
     EndDrawing();
   }
 
-
+  CloseWindow();
   return 0;
 }
 
