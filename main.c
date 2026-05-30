@@ -6,16 +6,26 @@
 #define SCREEN_HEIGHT 1440
 #define CENTER_X SCREEN_WIDTH / 2.0f 
 #define CENTER_Y SCREEN_HEIGHT / 2.0f 
-#define ZOOM_FACTOR 1.5f; 
+#define ZOOM_FACTOR 1.5f 
+#define EULER 2.71828
  
 void draw_x_axis(int width, int height);
 void draw_y_axis(int width, int height);
-float f(float x, float x_scale, float y_scale);
+float plot_parabola(float x, float x_scale, float y_scale);
+float plot_sin(float x, float x_scale, float y_scale);
+float plot_e(float x, float x_scale, float y_scale);
+float (*plot_fn)(float, float, float) = NULL;
 
-int main()
+int main(int argc, char *argv[])
 {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Function Plotter"); 
   SetTargetFPS(240);
+  
+  switch (argv[1])
+  {
+    case "parabola":
+      plot_fn = plot_parabola;
+  }
 
   float original_x_scale = 0.05f;
   float original_y_scale = 100.0f;
@@ -51,7 +61,7 @@ int main()
 
       for (float x = -CENTER_X; x < CENTER_X; x+= 16.0f)
       {
-        float y = f(x, fabs(x_scale), fabs(y_scale));
+        float y = plot_fn(x, fabs(x_scale), fabs(y_scale));
 
         float pixelX = x + CENTER_X;
         float pixelY = CENTER_Y - y;
@@ -91,9 +101,15 @@ void draw_y_axis(int width, int height)
   DrawLine(0, height / 2, width, height / 2, WHITE);
 }
 
-float f(float x, float x_scale, float y_scale)
+float plot_parabola(float x, float x_scale, float y_scale)
+{
+  return pow(x * x_scale, 2) * y_scale;
+}
+float plot_sin(float x, float x_scale, float y_scale)
 {
   return sinf(x * x_scale) * y_scale;
-  //return pow(x * x_scale, 2) * y_scale;
-  //return pow(2.71828, x * x_scale) * y_scale;
+}
+float plot_e(float x, float x_scale, float y_scale)
+{
+  return pow(2.71828, x * x_scale) * y_scale;
 }
