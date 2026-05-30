@@ -66,7 +66,8 @@ int main(int argc, char *argv[])
 
     if (drag_completed)
     {
-      pixel_offset = Vector2Subtract(drag_ended, drag_started); 
+      pixel_offset = Vector2Add(pixel_offset, Vector2Subtract(drag_ended, drag_started)); 
+      drag_completed = false;
     }
 
     BeginDrawing();
