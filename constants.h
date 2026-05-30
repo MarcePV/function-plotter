@@ -1,3 +1,6 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 1440
 #define CENTER_X SCREEN_WIDTH / 2.0f 
@@ -14,3 +17,5 @@
 #define FPS_TEXT_Y 200
 #define TEXT_FONT_SIZE 75
 #define TEXT_COLOR GREEN
+
+#endif

@@ -5,13 +5,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "constants.h"
+#include "plot_functions.h"
 
 void draw_x_axis(int width, int height);
 void draw_y_axis(int width, int height);
-float plot_parabola(float x, float x_scale, float y_scale);
-float plot_sin(float x, float x_scale, float y_scale);
-float plot_e(float x, float x_scale, float y_scale);
-float (*plot_fn)(float, float, float) = NULL;
 
 int main(int argc, char *argv[])
 {
