@@ -1,12 +1,15 @@
+#include <math.h>
 #include <raylib.h>
 #include <raymath.h>
 
 #define SCREEN_WIDTH 1440
-#define SCREEN_HEIGHT 1440 // for now, transform for asymetric alter
+#define SCREEN_HEIGHT 1440
+#define CENTER_X SCREEN_WIDTH / 2.0f 
+#define CENTER_Y SCREEN_HEIGHT / 2.0f 
  
 void draw_x_axis(int width, int height);
 void draw_y_axis(int width, int height);
-int f(float x);
+float f(float x);
 
 int main()
 {
@@ -17,15 +20,22 @@ int main()
     
 
     BeginDrawing();
+
       ClearBackground(BLACK);
 
-      for (float x = 0.0f; x < SCREEN_WIDTH; x++)
+      for (float x = -CENTER_X; x < CENTER_X; x+= 0.05f)
       {
-        DrawCircle(x, f(x), 1, BLUE);
+        float y = f(x);
+
+        float pixelX = x + CENTER_X;
+        float pixelY = CENTER_Y - y;
+
+        DrawCircleV((Vector2){ pixelX, pixelY }, 1, BLUE);
       }
 
       draw_x_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
       draw_y_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
+
     EndDrawing();
   }
 
@@ -44,7 +54,7 @@ void draw_y_axis(int width, int height)
   DrawLine(0, height / 2, width, height / 2, WHITE);
 }
 
-int f(float x)
+float f(float x)
 {
-  return x;
+  return pow(x, 3) / 1000.0f;
 }
