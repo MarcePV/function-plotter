@@ -1,10 +1,9 @@
 #include <math.h>
 #include <raylib.h>
 #include <raymath.h>
-#include <string.h>
 #include <unistd.h>
-#include <stdio.h>
 #include "constants.h"
+#include "getopt.h"
 #include "plot_functions.h"
 
 void draw_x_axis(int width, int height);
@@ -12,49 +11,9 @@ void draw_y_axis(int width, int height);
 
 int main(int argc, char *argv[])
 {
+  plot_fn_t plot_fn = extract_getopt_plot_function(argc, argv);
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Function Plotter"); 
   SetTargetFPS(240);
-
-  if (argc < 2)
-  {
-    printf("\n\nUsage: <program> [-f] <name of function> (e.g. parabola, euler, sin).\n\n");
-    CloseWindow();
-    return -1;
-  }
-
-  char opt;
-  char *func_name;
-
-  while ( (opt = getopt(argc, argv, "f:")) != -1)
-  {
-    switch (opt)
-    {
-      case 'f':
-        func_name = optarg;  
-        break;
-      default:
-        printf("\n\nOptarg Usage: <program> [-f] <name of function> (e.g. parabola, euler, sin).\n\n");
-        CloseWindow();
-        return -1;
-    }
-  }
-
-  if (strcmp(func_name, "parabola") == 0)
-  {
-    plot_fn = plot_parabola;
-  }
-  else if (strcmp(func_name, "euler") == 0)
-  {
-    plot_fn = plot_e;
-  } 
-  else if (strcmp(func_name, "sin") == 0)
-  {
-    plot_fn = plot_sin;
-  }
-
-  printf("\n\n%s\n\n", func_name);
-
-  
 
   float original_x_scale = 0.05f;
   float original_y_scale = 100.0f;
@@ -130,15 +89,4 @@ void draw_y_axis(int width, int height)
   DrawLine(0, height / 2, width, height / 2, WHITE);
 }
 
-float plot_parabola(float x, float x_scale, float y_scale)
-{
-  return pow(x * x_scale, 2) * y_scale;
-}
-float plot_sin(float x, float x_scale, float y_scale)
-{
-  return sinf(x * x_scale) * y_scale;
-}
-float plot_e(float x, float x_scale, float y_scale)
-{
-  return pow(EULER, x * x_scale) * y_scale;
-}
+

@@ -6,6 +6,6 @@
 float plot_parabola(float x, float x_scale, float y_scale);
 float plot_sin(float x, float x_scale, float y_scale);
 float plot_e(float x, float x_scale, float y_scale);
-extern float (*plot_fn)(float, float, float);
+typedef float (*plot_fn_t)(float, float, float);
 
 #endif
