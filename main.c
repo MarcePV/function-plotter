@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
   if (plot_fn == NULL) return 1;
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Function Plotter"); 
-  SetTargetFPS(1000);
+  SetTargetFPS(60);
 
   float original_x_scale = 0.05f;
   float original_y_scale = 100.0f;
