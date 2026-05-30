@@ -42,6 +42,24 @@ int main(int argc, char *argv[])
     return -1;
   }
 
+  char opt;
+  char *func_name;
+
+  while (( opt = getopt(argc, argv, "f:") ))
+  {
+    switch (opt)
+    {
+      case 'f':
+        func_name = optarg;  
+        break;
+      default:
+        printf("\n\nOptarg Usage: <program> [-f] <name of function> (e.g. parabola, euler, sin).\n\n");
+        CloseWindow();
+        return -1;
+    }
+  }
+
+  printf("%s", func_name);
 
   
 
