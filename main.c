@@ -36,7 +36,6 @@ int main(int argc, char *argv[])
 
   if (argc < 2)
   {
-    (void)argv;
     printf("\n\nUsage: <program> [-f] <name of function> (e.g. parabola, euler, sin).\n\n");
     CloseWindow();
     return -1;
@@ -45,7 +44,7 @@ int main(int argc, char *argv[])
   char opt;
   char *func_name;
 
-  while (( opt = getopt(argc, argv, "f:") ))
+  while ( (opt = getopt(argc, argv, "f:")) != -1)
   {
     switch (opt)
     {
@@ -59,7 +58,20 @@ int main(int argc, char *argv[])
     }
   }
 
-  printf("%s", func_name);
+  if (strcmp(func_name, "parabola") == 0)
+  {
+    plot_fn = plot_parabola;
+  }
+  else if (strcmp(func_name, "euler") == 0)
+  {
+    plot_fn = plot_e;
+  } 
+  else if (strcmp(func_name, "sin") == 0)
+  {
+    plot_fn = plot_sin;
+  }
+
+  printf("\n\n%s\n\n", func_name);
 
   
 
@@ -97,7 +109,7 @@ int main(int argc, char *argv[])
 
       for (float x = -CENTER_X; x < CENTER_X; x+= DELTA_PIXELS)
       {
-        float y = plot_parabola(x, fabs(x_scale), fabs(y_scale)); // arbitrary plot for now
+        float y = plot_fn(x, fabs(x_scale), fabs(y_scale)); // arbitrary plot for now
 
         float pixelX = x + CENTER_X;
         float pixelY = CENTER_Y - y;
