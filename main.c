@@ -15,6 +15,7 @@ float f(float x, float x_scale, float y_scale);
 int main()
 {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Function Plotter"); 
+  SetTargetFPS(240);
 
   float original_x_scale = 0.05f;
   float original_y_scale = 100.0f;
@@ -48,7 +49,7 @@ int main()
       float previous_x, previous_y;
       bool first_point = true;
 
-      for (float x = -CENTER_X; x < CENTER_X; x+= 15.0f)
+      for (float x = -CENTER_X; x < CENTER_X; x+= 16.0f)
       {
         float y = f(x, fabs(x_scale), fabs(y_scale));
 
@@ -68,7 +69,9 @@ int main()
 
       draw_x_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
       draw_y_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
+
       DrawText(TextFormat("Zoom: %.2f%%", percent_zoom), 100, 100, 75, GREEN);
+      DrawText(TextFormat("FPS: %.2f", 1.0f/GetFrameTime()), 100, 300, 75, GREEN);
 
     EndDrawing();
   }
@@ -90,7 +93,7 @@ void draw_y_axis(int width, int height)
 
 float f(float x, float x_scale, float y_scale)
 {
-  //return sinf(x * x_scale) * y_scale;
-  return pow(x * x_scale, 2) * y_scale;
+  return sinf(x * x_scale) * y_scale;
+  //return pow(x * x_scale, 2) * y_scale;
   //return pow(2.71828, x * x_scale) * y_scale;
 }
