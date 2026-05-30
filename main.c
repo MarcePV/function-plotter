@@ -1,6 +1,7 @@
 #include <math.h>
 #include <raylib.h>
 #include <raymath.h>
+#include <stdlib.h>
 
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 1440
@@ -8,6 +9,16 @@
 #define CENTER_Y SCREEN_HEIGHT / 2.0f 
 #define ZOOM_FACTOR 1.5f 
 #define EULER 2.71828
+#define ZERO_SCROLL 0.0f
+#define PERCENT_100 100.0f
+#define DELTA_PIXELS 16.0f
+#define POINT_RADIUS 1
+#define ZOOM_PERCENT_TEXT_X 100
+#define ZOOM_PERCENT_TEXT_Y 100
+#define FPS_TEXT_X ZOOM_PERCENT_TEXT_X 
+#define FPS_TEXT_Y 200
+#define TEXT_FONT_SIZE 75
+#define TEXT_COLOR GREEN
  
 void draw_x_axis(int width, int height);
 void draw_y_axis(int width, int height);
@@ -16,16 +27,11 @@ float plot_sin(float x, float x_scale, float y_scale);
 float plot_e(float x, float x_scale, float y_scale);
 float (*plot_fn)(float, float, float) = NULL;
 
-int main(int argc, char *argv[])
+int main()
 {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Function Plotter"); 
   SetTargetFPS(240);
   
-  switch (argv[1])
-  {
-    case "parabola":
-      plot_fn = plot_parabola;
-  }
 
   float original_x_scale = 0.05f;
   float original_y_scale = 100.0f;
@@ -33,25 +39,25 @@ int main(int argc, char *argv[])
   float x_scale = original_x_scale;
   float y_scale = original_y_scale;
 
-  float d_mouse_wheel = 0.0f;
+  float d_mouse_wheel = ZERO_SCROLL;
   float percent_zoom = 0.0f;
 
   while (!WindowShouldClose())
   {
     d_mouse_wheel = GetMouseWheelMove();
 
-    if (d_mouse_wheel > 0.0f) 
+    if (d_mouse_wheel > ZERO_SCROLL) 
     {
       x_scale /= ZOOM_FACTOR;
       y_scale *= ZOOM_FACTOR;
     }
-    else if (d_mouse_wheel < 0.0f)
+    else if (d_mouse_wheel < ZERO_SCROLL)
     {
       x_scale *= ZOOM_FACTOR;
       y_scale /= ZOOM_FACTOR;
     }
 
-    percent_zoom = (y_scale / original_y_scale) * 100.0f; 
+    percent_zoom = (y_scale / original_y_scale) * PERCENT_100; 
 
     BeginDrawing();
 
@@ -59,14 +65,14 @@ int main(int argc, char *argv[])
       float previous_x, previous_y;
       bool first_point = true;
 
-      for (float x = -CENTER_X; x < CENTER_X; x+= 16.0f)
+      for (float x = -CENTER_X; x < CENTER_X; x+= DELTA_PIXELS)
       {
-        float y = plot_fn(x, fabs(x_scale), fabs(y_scale));
+        float y = plot_parabola(x, fabs(x_scale), fabs(y_scale)); // arbitrary plot for now
 
         float pixelX = x + CENTER_X;
         float pixelY = CENTER_Y - y;
 
-        DrawCircleV((Vector2){ pixelX, pixelY }, 1, BLUE);
+        DrawCircleV((Vector2){ pixelX, pixelY }, POINT_RADIUS, BLUE);
         if (!first_point) 
         {
           DrawLine(previous_x, previous_y, pixelX, pixelY, BLUE);
@@ -80,8 +86,8 @@ int main(int argc, char *argv[])
       draw_x_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
       draw_y_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-      DrawText(TextFormat("Zoom: %.2f%%", percent_zoom), 100, 100, 75, GREEN);
-      DrawText(TextFormat("FPS: %.2f", 1.0f/GetFrameTime()), 100, 300, 75, GREEN);
+      DrawText(TextFormat("Zoom: %.2f%%", percent_zoom), ZOOM_PERCENT_TEXT_X, ZOOM_PERCENT_TEXT_Y, TEXT_FONT_SIZE, GREEN);
+      DrawText(TextFormat("FPS: %.2f", 1.0f / GetFrameTime()), FPS_TEXT_X, FPS_TEXT_Y, TEXT_FONT_SIZE, GREEN);
 
     EndDrawing();
   }
@@ -111,5 +117,5 @@ float plot_sin(float x, float x_scale, float y_scale)
 }
 float plot_e(float x, float x_scale, float y_scale)
 {
-  return pow(2.71828, x * x_scale) * y_scale;
+  return pow(EULER, x * x_scale) * y_scale;
 }
