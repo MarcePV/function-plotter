@@ -6,8 +6,7 @@
 #define SCREEN_HEIGHT 1440
 #define CENTER_X SCREEN_WIDTH / 2.0f 
 #define CENTER_Y SCREEN_HEIGHT / 2.0f 
-#define ZOOM_IN_X_SCALE 0.01f
-#define ZOOM_IN_Y_SCALE 50.0f
+#define ZOOM_FACTOR 1.5f; 
  
 void draw_x_axis(int width, int height);
 void draw_y_axis(int width, int height);
@@ -32,22 +31,24 @@ int main()
 
     if (d_mouse_wheel > 0.0f) 
     {
-      x_scale -= ZOOM_IN_X_SCALE;
-      y_scale += ZOOM_IN_Y_SCALE;
+      x_scale /= ZOOM_FACTOR;
+      y_scale *= ZOOM_FACTOR;
     }
     else if (d_mouse_wheel < 0.0f)
     {
-      x_scale += ZOOM_IN_X_SCALE;
-      y_scale -= ZOOM_IN_Y_SCALE;
+      x_scale *= ZOOM_FACTOR;
+      y_scale /= ZOOM_FACTOR;
     }
 
-    percent_zoom = (y_scale + x_scale) / (original_x_scale + original_y_scale) * 100.0f;
+    percent_zoom = (y_scale / original_y_scale) * 100.0f; 
 
     BeginDrawing();
 
       ClearBackground(BLACK);
+      float previous_x, previous_y;
+      bool first_point = true;
 
-      for (float x = -CENTER_X; x < CENTER_X; x+= 0.05f)
+      for (float x = -CENTER_X; x < CENTER_X; x+= 15.0f)
       {
         float y = f(x, fabs(x_scale), fabs(y_scale));
 
@@ -55,6 +56,14 @@ int main()
         float pixelY = CENTER_Y - y;
 
         DrawCircleV((Vector2){ pixelX, pixelY }, 1, BLUE);
+        if (!first_point) 
+        {
+          DrawLine(previous_x, previous_y, pixelX, pixelY, BLUE);
+        }
+        
+        previous_x = pixelX;
+        previous_y = pixelY;
+        first_point = false;
       }
 
       draw_x_axis(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -83,4 +92,5 @@ float f(float x, float x_scale, float y_scale)
 {
   //return sinf(x * x_scale) * y_scale;
   return pow(x * x_scale, 2) * y_scale;
+  //return pow(2.71828, x * x_scale) * y_scale;
 }
