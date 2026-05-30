@@ -9,7 +9,7 @@
 #define EULER 2.71828
 #define ZERO_SCROLL 0.0f
 #define PERCENT_100 100.0f
-#define DELTA_PIXELS 16.0f
+#define DELTA_PIXELS 1.0f
 #define POINT_RADIUS 1
 #define ZOOM_PERCENT_TEXT_X 100
 #define ZOOM_PERCENT_TEXT_Y 100
@@ -17,5 +17,6 @@
 #define FPS_TEXT_Y 200
 #define TEXT_FONT_SIZE 75
 #define TEXT_COLOR GREEN
+#define MAX_POINTS 2000
 
 #endif
