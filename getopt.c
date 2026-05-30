@@ -5,8 +5,7 @@ plot_fn_t extract_getopt_plot_function(int argc, char *argv[])
   if (argc < 2)
   {
     printf("\n\nUsage: <program> [-f] <name of function> (e.g. parabola, euler, sin).\n\n");
-    CloseWindow();
-    exit(-1);
+    return NULL;
   }
 
   char opt;
@@ -21,8 +20,7 @@ plot_fn_t extract_getopt_plot_function(int argc, char *argv[])
         break;
       default:
         printf("\n\nOptarg Usage: <program> [-f] <name of function> (e.g. parabola, euler, sin).\n\n");
-        CloseWindow();
-        exit(-1);
+        return NULL;
     }
   }
 

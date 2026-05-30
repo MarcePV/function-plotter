@@ -12,6 +12,9 @@ void draw_y_axis(int width, int height);
 int main(int argc, char *argv[])
 {
   plot_fn_t plot_fn = extract_getopt_plot_function(argc, argv);
+  
+  if (plot_fn == NULL) return -1;
+
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Function Plotter"); 
   SetTargetFPS(240);
 
