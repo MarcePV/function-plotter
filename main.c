@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
   float y_scale = original_y_scale;
 
   float d_mouse_wheel = ZERO_SCROLL;
-  float percent_zoom = 0.0f;
 
   Vector2 pixel_offset = Vector2Zero();
 
@@ -46,9 +45,6 @@ int main(int argc, char *argv[])
       x_scale *= ZOOM_FACTOR;
       y_scale /= ZOOM_FACTOR;
     }
-
-
-    percent_zoom = (y_scale / original_y_scale) * PERCENT_100; 
 
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !dragging)
     {
@@ -88,12 +84,12 @@ int main(int argc, char *argv[])
       }
 
       DrawLineStrip(points, point_count, BLUE);
-
       draw_x_axis(SCREEN_WIDTH, SCREEN_HEIGHT, pixel_offset);
       draw_y_axis(SCREEN_WIDTH, SCREEN_HEIGHT, pixel_offset);
 
-      DrawText(TextFormat("Zoom: %.2f%%", percent_zoom), ZOOM_PERCENT_TEXT_X, ZOOM_PERCENT_TEXT_Y, TEXT_FONT_SIZE, GREEN);
       DrawText(TextFormat("FPS: %.2f", 1.0f / GetFrameTime()), FPS_TEXT_X, FPS_TEXT_Y, TEXT_FONT_SIZE, GREEN);
+      DrawText("x", SCREEN_WIDTH - 50, SCREEN_HEIGHT / 2 + (int)pixel_offset.y, 30, WHITE);
+      DrawText("y", SCREEN_WIDTH / 2 + 10 + (int) pixel_offset.x, 0, 30, WHITE);
 
     EndDrawing();
   }
