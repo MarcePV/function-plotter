@@ -27,11 +27,9 @@ int main(int argc, char *argv[])
   float d_mouse_wheel = ZERO_SCROLL;
   float percent_zoom = 0.0f;
 
-  Vector2 drag_started = Vector2Zero();
-  Vector2 drag_ended = Vector2Zero();
   Vector2 pixel_offset = Vector2Zero();
+
   bool dragging = false;
-  bool drag_completed = false;
 
   while (!WindowShouldClose())
   {
@@ -54,20 +52,16 @@ int main(int argc, char *argv[])
 
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !dragging)
     {
-      drag_started = GetMousePosition(); 
       dragging = true;
     }
     else if (!IsMouseButtonDown(MOUSE_LEFT_BUTTON) && dragging)
     {
-      drag_ended = GetMousePosition();
       dragging = false;
-      drag_completed = true;
     }
 
-    if (drag_completed)
+    if (dragging)
     {
-      pixel_offset = Vector2Add(pixel_offset, Vector2Subtract(drag_ended, drag_started)); 
-      drag_completed = false;
+      pixel_offset = Vector2Add(pixel_offset, GetMouseDelta()); 
     }
 
     BeginDrawing();
@@ -76,7 +70,7 @@ int main(int argc, char *argv[])
       float previous_x, previous_y;
       bool first_point = true;
 
-      for (float x = -CENTER_X; x < CENTER_X; x+= DELTA_PIXELS)
+      for (float x = -CENTER_X - pixel_offset.x; x < CENTER_X - pixel_offset.x; x+= DELTA_PIXELS)
       {
         float y = plot_fn(x, fabs(x_scale), fabs(y_scale)); // arbitrary plot for now
 
@@ -86,7 +80,7 @@ int main(int argc, char *argv[])
         DrawCircleV((Vector2){ pixelX, pixelY }, POINT_RADIUS, BLUE);
         if (!first_point) 
         {
-          DrawLine(previous_x, previous_y, pixelX, pixelY, BLUE);
+          DrawLine(previous_x, previous_y, (int) pixelX, (int) pixelY, BLUE);
         }
         
         previous_x = pixelX;
@@ -108,14 +102,14 @@ int main(int argc, char *argv[])
 }
 
 
-void draw_x_axis(int width, int height, Vector2 pixel_offset)
-{
-  DrawLine(width / 2.0f + pixel_offset.x, 0 + pixel_offset.y, width / 2.0f + pixel_offset.x, height + pixel_offset.y, WHITE);  
-}
-
 void draw_y_axis(int width, int height, Vector2 pixel_offset)
 {
-  DrawLine(0 + pixel_offset.x, height / 2.0f + pixel_offset.y, width + pixel_offset.x, height / 2.0f + pixel_offset.y, WHITE);
+  DrawLine(width / 2.0f + pixel_offset.x, 0, width / 2.0f + pixel_offset.x, height, WHITE);  
+}
+
+void draw_x_axis(int width, int height, Vector2 pixel_offset)
+{
+  DrawLine(0, height / 2.0f + pixel_offset.y, width, height / 2.0f + pixel_offset.y, WHITE);
 }
 
 
