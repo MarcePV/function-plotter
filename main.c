@@ -4,24 +4,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include "constants.h"
 
-#define SCREEN_WIDTH 1440
-#define SCREEN_HEIGHT 1440
-#define CENTER_X SCREEN_WIDTH / 2.0f 
-#define CENTER_Y SCREEN_HEIGHT / 2.0f 
-#define ZOOM_FACTOR 1.5f 
-#define EULER 2.71828
-#define ZERO_SCROLL 0.0f
-#define PERCENT_100 100.0f
-#define DELTA_PIXELS 16.0f
-#define POINT_RADIUS 1
-#define ZOOM_PERCENT_TEXT_X 100
-#define ZOOM_PERCENT_TEXT_Y 100
-#define FPS_TEXT_X ZOOM_PERCENT_TEXT_X 
-#define FPS_TEXT_Y 200
-#define TEXT_FONT_SIZE 75
-#define TEXT_COLOR GREEN
- 
 void draw_x_axis(int width, int height);
 void draw_y_axis(int width, int height);
 float plot_parabola(float x, float x_scale, float y_scale);
